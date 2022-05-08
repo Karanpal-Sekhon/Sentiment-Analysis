@@ -11,4 +11,7 @@ soup = BeautifulSoup(r.text, "html.parser")
 
 results = soup.findAll(class_="the_review")
 
-print(results)
+reviews = []
+
+for result in results:
+    reviews.append(result.text.strip())
