@@ -36,7 +36,7 @@ def main():
     df["review_nopunc"] = df["review_lower"].str.replace(
         "[^\w\s]", "", regex=True)
     df["review_nostop"] = df["review_nopunc"].apply(lambda x: " ".join(x for x in x.split() if x not in stop_words))
-
+    print("Hello World")
 
 def average_word(review):
     words = review.split()
