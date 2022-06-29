@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
 from nltk.corpus import stopwords
+from textblob import Word, TextBlob
+
 
 
 def main():
@@ -35,7 +37,22 @@ def main():
         lambda x: " ".join(x.lower() for x in x.split()))
     df["review_nopunc"] = df["review_lower"].str.replace(
         "[^\w\s]", "", regex=True)
-    df["review_nostop"] = df["review_nopunc"].apply(lambda x: " ".join(x for x in x.split() if x not in stop_words))
+    df["cleaned_review"] = df["review_nopunc"].apply(lambda x: " ".join(x for x in x.split() if x not in stop_words))
+    # add a clean rate later
+
+    # Lemmatization
+    # Greater -> Great 
+    df["lemmatized"] = df["cleaned_review"].apply(lambda x: " ".join(Word(word).lemmatize() for word in x.split())) 
+    # Sentiment Analysis
+    df["polarity"] = df["lemmatized"].apply(lambda x: TextBlob(x).sentiment[0])
+    df["subjectivity"] = df["lemmatized"].apply(lambda x: TextBlob(x).sentiment[1])
+
+    print(df.columns.values)
+    df.drop(["review_lower", "review_nopunc", "cleaned_review", "lemmatized"], axis = 1, inplace=True)
+    print(df.columns.values)
+    print(df.head())
+
+
 
 def average_word(review):
     words = review.split()
