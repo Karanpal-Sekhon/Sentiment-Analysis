@@ -69,8 +69,7 @@ def main():
     df = data_anal(df)
     df = clean_data(df)
     df = lem_sent(df)
-
-
+    print(df.head())
 
 
 
