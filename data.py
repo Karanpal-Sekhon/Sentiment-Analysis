@@ -13,11 +13,12 @@ def grab_movie():
     movie_name = input("Pick a movie: ")
     movie_name = "_".join(movie_name.split())
     movie_string_url = "https://www.rottentomatoes.com/m/" + movie_name + "/reviews"
+    print(movie_string_url)
     r = requests.get(movie_string_url)
     soup = BeautifulSoup(r.text, "html.parser")
 
     # Grab reviews
-    results = soup.findAll(class_="the_review")
+    results = soup.find_all("p", class_ = "review-text")
     reviews = []
     for result in results:
         reviews.append(result.text.strip())
